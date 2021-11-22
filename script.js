@@ -14,25 +14,33 @@ function skillsToString(array) {
     return str;
 }
 
+function isItActive(arrayValue) {
+    if (arrayValue === true) {
+        return "style='color:green'";
+    }
+}
+
 function init() {
     const fetchPromise = fetch('https://handlers.education.launchcode.org/static/astronauts.json');
     fetchPromise.then(function(response) {
         const jsonPromise = response.json();
         jsonPromise.then(function(json) {
-            console.log(json);
+            const astronauts = document.getElementById('title');
+            astronauts.innerHTML = `Astronauts: ${json.length} total`;
+            const sortedJSON = json.sort((a,b) => (a.hoursInSpace > b.hoursInSpace) ? 1 : ((b.hoursInSpace > a.hoursInSpace) ? -1 : 0));
             const container = document.getElementById('container');
             for (let i = 0; i < json.length; i++) {
                 container.innerHTML += `
                     <div class='astronaut'>
                         <div class='bio'>
-                            <h3>${json[i].firstName + ' ' + json[i].lastName}</h3>
+                            <h3>${sortedJSON[i].firstName + ' ' + sortedJSON[i].lastName}</h3>
                             <ul>
-                                <li>Hours in space: ${json[i].hoursInSpace}</li>
-                                <li>Active: ${json[i].active}</li>
-                                <li>Skills: ${skillsToString(json[i].skills)} </li>
+                                <li>Hours in space: ${sortedJSON[i].hoursInSpace}</li>
+                                <li ${isItActive(sortedJSON[i].active)}>Active: ${sortedJSON[i].active}</li>
+                                <li>Skills: ${skillsToString(sortedJSON[i].skills)} </li>
                             </ul>
                         </div>
-                        <img class='avatar' src='${json[i].picture}'>
+                        <img class='avatar' src='${sortedJSON[i].picture}'>
                     </div>
                 `;
             }
