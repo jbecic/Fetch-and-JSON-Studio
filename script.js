@@ -26,7 +26,7 @@ function init() {
         const jsonPromise = response.json();
         jsonPromise.then(function(json) {
             const astronauts = document.getElementById('count');
-            astronauts.innerHTML = `Total Astronauts: ${json.length} total`;
+            astronauts.innerHTML = `Total Astronauts: ${json.length}`;
             const sortedJSON = json.sort((a,b) => (a.hoursInSpace > b.hoursInSpace) ? 1 : ((b.hoursInSpace > a.hoursInSpace) ? -1 : 0));
             const container = document.getElementById('container');
             for (let i = 0; i < json.length; i++) {
